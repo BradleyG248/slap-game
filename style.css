@@ -1,0 +1,11 @@
+.forest-bg{
+  background-image: url("forest-bg.jpg");
+  color:white;
+}
+main img{
+  height:10rem;
+}
+.dark-bg{
+  color:white;
+  background-color: #333634;
+}

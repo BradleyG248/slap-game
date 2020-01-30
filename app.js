@@ -27,17 +27,18 @@ let player = {
   items: [items.attack, items.defense]
 }
 let playerName = "Bradley";
+document.getElementById("player-name").textContent = playerName;
 let hits = 0;
 function updateHealth() {
   if (enemy.health > 0) {
-    document.getElementById("health").style = ("width: " + enemy.health + '%');
-    document.getElementById("hits").textContent = "Hits:" + hits;
-    document.getElementById("health-num").textContent = "Health: " + enemy.health;
+    document.getElementById("enemy-health").style = ("width: " + enemy.health + '%');
+    document.getElementById("player-hits").textContent = "Hits:" + hits;
+    document.getElementById("enemy-health-num").textContent = "Health: " + enemy.health;
   }
   else {
-    document.getElementById("health").style = ("width: " + enemy.health + '%');
-    document.getElementById("hits").textContent = "Hits:" + hits;
-    document.getElementById("health-num").textContent = "K.O!";
+    document.getElementById("enemy-health").style = ("width: " + enemy.health + '%');
+    document.getElementById("player-hits").textContent = "Hits:" + hits;
+    document.getElementById("enemy-health-num").textContent = "K.O!";
   }
 }
 function slap() {
@@ -94,4 +95,9 @@ function setMods(type) {
 }
 function updateItemUI(type) {
   document.getElementById("mods").textContent = "Item: " + type + ". Duration: " + itemTimeOut + ".";
+}
+function reset() {
+  enemy.health = 100;
+  hits = 0;
+  updateHealth();
 }
