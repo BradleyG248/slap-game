@@ -29,31 +29,52 @@ let player = {
 let playerName = "Bradley";
 let hits = 0;
 function updateHealth() {
-  document.getElementById("health").style = ("width: " + enemy.health + '%');
-  document.getElementById("hits").textContent = "Hits:" + hits;
+  if (enemy.health > 0) {
+    document.getElementById("health").style = ("width: " + enemy.health + '%');
+    document.getElementById("hits").textContent = "Hits:" + hits;
+    document.getElementById("health-num").textContent = "Health: " + enemy.health;
+  }
+  else {
+    document.getElementById("health").style = ("width: " + enemy.health + '%');
+    document.getElementById("hits").textContent = "Hits:" + hits;
+    document.getElementById("health-num").textContent = "K.O!";
+  }
 }
 function slap() {
   if (itemTimeOut > 0) {
-    enemy.health = enemy.health - 1 - addMods(itemActive);
+    enemy.health = enemy.health - Math.ceil(Math.random() * 2) - addMods(itemActive);
     hits++;
     updateHealth();
-    itemTimeOut--;
   }
   else {
-    enemy.health = enemy.health - 1;
+    enemy.health = enemy.health - Math.ceil(Math.random() * 2);
     hits++;
     updateHealth();
   }
 }
 function punch() {
-  enemy.health = enemy.health - 5 + addMods();
-  hits++;
-  updateHealth();
+  if (itemTimeOut > 0) {
+    enemy.health = enemy.health - Math.ceil(Math.random() * 3 + 4) - addMods(itemActive);
+    hits++;
+    updateHealth();
+  }
+  else {
+    enemy.health = enemy.health - Math.ceil(Math.random() * 3 + 4);
+    hits++;
+    updateHealth();
+  }
 }
 function kick() {
-  enemy.health = enemy.health - 10 + addMods();
-  hits++;
-  updateHealth();
+  if (itemTimeOut > 0) {
+    enemy.health = enemy.health - Math.ceil(Math.random() * 5 + 10) - addMods(itemActive);
+    hits++;
+    updateHealth();
+  }
+  else {
+    enemy.health = enemy.health - Math.ceil(Math.random() * 5 + 10);
+    hits++;
+    updateHealth();
+  }
 }
 function giveAttack() {
   player.items.push(items.attack)
@@ -62,10 +83,15 @@ function giveDefense() {
   player.items.push(items.defense)
 }
 function addMods(type) {
+  itemTimeOut--;
+  updateItemUI(type);
   return items[type].modifier;
-  console.log(itemActive + itemTimeOut);
 }
 function setMods(type) {
   itemActive = type;
   itemTimeOut = items[type].duration;
+  updateItemUI(type);
+}
+function updateItemUI(type) {
+  document.getElementById("mods").textContent = "Item: " + type + ". Duration: " + itemTimeOut + ".";
 }
