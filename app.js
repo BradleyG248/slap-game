@@ -16,13 +16,25 @@ let itemActive = "attack";
 let itemTimeOut = 0;
 let enemy = {
   health: 100,
+  hits: 0,
+  attack: 7,
+  mobility: 50
 }
 let player = {
   health: 100,
   attacks: {
-    slap: 1,
-    punch: 5,
-    kick: 10
+    slap: {
+      attack: 1,
+      refresh: 1
+    },
+    punch: {
+      attack: 5,
+      refresh: 2
+    },
+    kick: {
+      attack: 10,
+      refresh: 3
+    }
   },
   items: {
     attack: {
@@ -31,56 +43,72 @@ let player = {
     defense: {
       quantity: 3
     }
-  }
+  },
+  hits: 0,
+  mobility: 50
 }
 let playerName = "Bradley";
 document.getElementById("player-name").textContent = playerName;
 let hits = 0;
+function playerHitTest() {
+  let luck = player.mobility / enemy.mobility * Math.random() * 100;
+  if (luck > 50) {
+    document.getElementById("player-hit-test").textContent = "Hit!"
+    return true;
+  }
+  else {
+    document.getElementById("player-hit-test").textContent = "Miss!"
+    return false;
+  }
+}
+function enemyHitTest() {
+  let luck = enemy.mobility / player.mobility * Math.random() * 100;
+  if (luck > 50) {
+    document.getElementById("enemy-hit-test").textContent = "Hit!"
+    return true;
+  }
+  else {
+    document.getElementById("enemy-hit-test").textContent = "Miss!"
+    return false;
+  }
+}
 function updateHealth() {
-  if (enemy.health > 0) {
+  if (enemy.health <= 0) {
+    document.getElementById("enemy-health").style = ("width: " + enemy.health + '%');
+    document.getElementById("player-hits").textContent = "Hits:" + hits;
+    document.getElementById("enemy-health-num").textContent = "K.O!"
+    document.getElementById("enemy-hits").textContent = "Hits:" + enemy.hits;
+    document.getElementById("player-hits").textContent = "Hits:" + player.hits;
+    document.getElementById("player-health-num").textContent = "Health: " + player.health;
+  }
+  else if (player.health <= 0) {
     document.getElementById("enemy-health").style = ("width: " + enemy.health + '%');
     document.getElementById("player-hits").textContent = "Hits:" + hits;
     document.getElementById("enemy-health-num").textContent = "Health: " + enemy.health;
+    document.getElementById("enemy-hits").textContent = "Hits:" + enemy.hits;
+    document.getElementById("player-hits").textContent = "Hits:" + player.hits;
+    document.getElementById("player-health-num").textContent = "You Lose!";
   }
   else {
     document.getElementById("enemy-health").style = ("width: " + enemy.health + '%');
-    document.getElementById("player-hits").textContent = "Hits:" + hits;
-    document.getElementById("enemy-health-num").textContent = "K.O!";
+    document.getElementById("enemy-hits").textContent = "Hits:" + enemy.hits;
+    document.getElementById("enemy-health-num").textContent = "Health: " + enemy.health;
+    document.getElementById("player-health").style = ("width: " + player.health + '%');
+    document.getElementById("player-hits").textContent = "Hits:" + player.hits;
+    document.getElementById("player-health-num").textContent = "Health: " + player.health;
   }
 }
-function slap() {
-  if (itemTimeOut > 0) {
-    enemy.health = enemy.health - Math.ceil(Math.random() * 2) - addMods(itemActive);
-    hits++;
-    updateHealth();
-  }
-  else {
-    enemy.health = enemy.health - Math.ceil(Math.random() * 2);
-    hits++;
+function enemyAttack() {
+  if (enemyHitTest()) {
+    player.health -= enemy.attack;
+    enemy.hits++;
     updateHealth();
   }
 }
-function punch() {
-  if (itemTimeOut > 0) {
-    enemy.health = enemy.health - Math.ceil(Math.random() * 3 + 4) - addMods(itemActive);
-    hits++;
-    updateHealth();
-  }
-  else {
-    enemy.health = enemy.health - Math.ceil(Math.random() * 3 + 4);
-    hits++;
-    updateHealth();
-  }
-}
-function kick() {
-  if (itemTimeOut > 0) {
-    enemy.health = enemy.health - Math.ceil(Math.random() * 5 + 10) - addMods(itemActive);
-    hits++;
-    updateHealth();
-  }
-  else {
-    enemy.health = enemy.health - Math.ceil(Math.random() * 5 + 10);
-    hits++;
+function playerAttack(type) {
+  if (playerHitTest()) {
+    enemy.health = enemy.health - Math.ceil((Math.random() * player.attacks[type].attack / 2) + Math.ceil(player.attacks[type].attack / 2));
+    player.hits++;
     updateHealth();
   }
 }
@@ -119,7 +147,9 @@ function updateItemUI(type) {
 }
 function reset() {
   enemy.health = 100;
-  hits = 0;
+  player.health = 100;
+  player.hits = 0;
+  enemy.hits = 0;
   player.items.attack.quantity = 3;
   player.items.defense.quantity = 3;
   document.getElementById("defense-info").textContent = "x" + player.items.defense.quantity;
