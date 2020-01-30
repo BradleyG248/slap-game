@@ -19,14 +19,23 @@
         <div class="col-4">
           <h2 id="player-name">Name</h2>
           <h5 id="player-hits">Hits:</h5>
-        </div>
-        <div class="col-2">
-          <h2 id="mods">Items Active:</h2>
+          <h5 id="player-health-num">Health</h5>
+          <div class="progress">
+            <div id="player-health" class="progress-bar bg-success" role="progressbar" style="width: 100%"
+              aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
           <button class="btn btn-danger" onClick="slap()">Slap</button>
           <button class="btn btn-danger" onClick="punch()">Punch</button>
           <button class="btn btn-danger" onClick="kick()">Kick</button>
-          <button class="btn btn-info" onClick="setMods('defense')">Defense item</button>
-          <button class="btn btn-info" onClick="setMods('attack')">Attack item</button>
+          <h2 id="mods">Items Active:</h2>
+        </div>
+        <div class="col-2 d-flex justify-content-center flex-column align-items-center">
+          <div class="d-flex justify-content-center flex-column align-items-center">
+            <img class=" item" src="defense-potion.png" onClick="setMods('defense')" alt="">
+            <p id="defense-info">Defense</p>
+            <img class="item" src="attack-potion.png" onClick="setMods('attack')" alt="">
+            <p id="attack-info">Attack</p>
+          </div>
           <button class="btn btn-primary" onClick="reset()">Reset</button>
         </div>
         <div class="col-2">
@@ -34,6 +43,7 @@
         </div>
         <div class="col-4">
           <h2 id="enemy-name">Dragon</h2>
+          <h5 id="enemy-hits">Hits:</h5>
           <h5 id="enemy-health-num">Health</h5>
           <div class="progress">
             <div id="enemy-health" class="progress-bar bg-success" role="progressbar" style="width: 100%"

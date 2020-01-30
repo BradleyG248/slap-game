@@ -24,7 +24,14 @@ let player = {
     punch: 5,
     kick: 10
   },
-  items: [items.attack, items.defense]
+  items: {
+    attack: {
+      quantity: 3
+    },
+    defense: {
+      quantity: 3
+    }
+  }
 }
 let playerName = "Bradley";
 document.getElementById("player-name").textContent = playerName;
@@ -89,15 +96,33 @@ function addMods(type) {
   return items[type].modifier;
 }
 function setMods(type) {
-  itemActive = type;
-  itemTimeOut = items[type].duration;
-  updateItemUI(type);
+  if (player.items[type].quantity > 0) {
+    player.items[type].quantity--;
+    itemActive = type;
+    itemTimeOut = items[type].duration;
+    updateItemUI(type);
+  }
+  else {
+    updateItemUI("empty");
+  }
 }
 function updateItemUI(type) {
-  document.getElementById("mods").textContent = "Item: " + type + ". Duration: " + itemTimeOut + ".";
+  if (type == "empty") {
+    document.getElementById("mods").textContent = "You're out.";
+    document.getElementById(type + "-info").textContent = "x" + player.items[type].quantity;
+  }
+
+  else {
+    document.getElementById("mods").textContent = "Item: " + type + ". Duration: " + itemTimeOut + ".";
+    document.getElementById(type + "-info").textContent = "x" + player.items[type].quantity;
+  }
 }
 function reset() {
   enemy.health = 100;
   hits = 0;
+  player.items.attack.quantity = 3;
+  player.items.defense.quantity = 3;
+  document.getElementById("defense-info").textContent = "x" + player.items.defense.quantity;
+  document.getElementById("attack-info").textContent = "x" + player.items.attack.quantity;
   updateHealth();
 }
