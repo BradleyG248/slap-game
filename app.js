@@ -18,7 +18,8 @@ let enemy = {
   health: 100,
   hits: 0,
   attack: 7,
-  mobility: 50
+  mobility: 50,
+  xp: 100
 }
 let player = {
   health: 100,
@@ -45,8 +46,10 @@ let player = {
     }
   },
   hits: 0,
-  mobility: 50
+  mobility: 50,
+  xp: 0
 }
+let playerTurn = true;
 let playerName = "Bradley";
 document.getElementById("player-name").textContent = playerName;
 let hits = 0;
@@ -104,12 +107,17 @@ function enemyAttack() {
     enemy.hits++;
     updateHealth();
   }
+  playerTurn = true;
 }
 function playerAttack(type) {
-  if (playerHitTest()) {
-    enemy.health = enemy.health - Math.ceil((Math.random() * player.attacks[type].attack / 2) + Math.ceil(player.attacks[type].attack / 2));
-    player.hits++;
-    updateHealth();
+  if (playerTurn) {
+    if (playerHitTest()) {
+      enemy.health = enemy.health - Math.ceil((Math.random() * player.attacks[type].attack / 2) + Math.ceil(player.attacks[type].attack / 2));
+      player.hits++;
+      updateHealth();
+    }
+    playerTurn = false;
+    setTimeout(enemyAttack, 1000);
   }
 }
 function giveAttack() {
