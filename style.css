@@ -18,3 +18,6 @@ img.item:hover{
 .row div{
   border:2px solid black;
 }
+.player{
+  position:absolute;
+}

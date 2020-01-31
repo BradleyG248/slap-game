@@ -55,7 +55,7 @@ document.getElementById("player-name").textContent = playerName;
 let hits = 0;
 function playerHitTest() {
   let luck = player.mobility / enemy.mobility * Math.random() * 100;
-  if (luck > 50) {
+  if (luck > 25) {
     document.getElementById("player-hit-test").textContent = "Hit!"
     return true;
   }
@@ -66,7 +66,7 @@ function playerHitTest() {
 }
 function enemyHitTest() {
   let luck = enemy.mobility / player.mobility * Math.random() * 100;
-  if (luck > 50) {
+  if (luck > 25) {
     document.getElementById("enemy-hit-test").textContent = "Hit!"
     return true;
   }
@@ -110,6 +110,7 @@ function enemyAttack() {
   playerTurn = true;
 }
 function playerAttack(type) {
+  document.getElementById("player").animate({ marginLeft: "10px" }, 100);
   if (playerTurn) {
     if (playerHitTest()) {
       enemy.health = enemy.health - Math.ceil((Math.random() * player.attacks[type].attack / 2) + Math.ceil(player.attacks[type].attack / 2));
